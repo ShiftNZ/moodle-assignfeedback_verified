@@ -230,6 +230,25 @@ class assign_feedback_verified extends assign_feedback_plugin {
     }
 
     /**
+     * Check all verifications for a student's assignment grade have been completed.
+     *
+     * @param stdClass $grade
+     * @return bool
+     */
+    public function is_verified(stdClass $grade): bool {
+        if (!$verifications = $this->get_verifications($grade, false)) {
+            return false;
+        }
+        $verifiedcount = 0;
+        foreach ($verifications as $verification) {
+            if ($verification->status == verification_status::VERIFIED) {
+                $verifiedcount++;
+            }
+        }
+        return $verifiedcount == count($verifications);
+    }
+
+    /**
      * Has the plugin form element been modified in the current submission?
      *
      * @param stdClass $grade
