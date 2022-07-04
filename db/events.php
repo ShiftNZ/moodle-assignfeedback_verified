@@ -15,18 +15,27 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Plugin event observers are registered here.
  *
  * @package     assignfeedback_verified
+ * @category    event
  * @copyright   2022 Skills Consulting Group
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+$observers = [
 
-defined('MOODLE_INTERNAL') || die();
+    [
+        'eventname'   => '\mod_assign\event\submission_created',
+        'callback'    => '\assignfeedback_verified\local\event\observer::submission_created',
+        'priority'    => 0,
+        'internal'    => false
+    ],
 
-$plugin->component = 'assignfeedback_verified';
-$plugin->release = '1.0.0';
-$plugin->version = 2022063000;
-$plugin->requires = 2020061500;
-$plugin->maturity = MATURITY_BETA;
-$plugin->supported = [39, 311];
+    [
+        'eventname'   => '\mod_assign\event\submission_updated',
+        'callback'    => '\assignfeedback_verified\local\event\observer::submission_updated',
+        'priority'    => 0,
+        'internal'    => false
+    ]
+
+];
