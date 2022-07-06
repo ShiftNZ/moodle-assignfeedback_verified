@@ -18,6 +18,21 @@ namespace assignfeedback_verified\local\event;
 
 class observer {
 
+    public static function allocate_verifier(\assignfeedback_verified\event\allocate_verifier $event) {
+
+        if ($record = $event->get_record_snapshot($event->objecttable, $event->objectid)) {
+            list($course, $coursemodule) = get_course_and_cm_from_instance($record->assignid, 'assign');
+            $context = \context_module::instance($coursemodule->id);
+            $assign = new \assign($context, $coursemodule, $course);
+            $grade = $assign->get_user_grade($record->userid, true);
+            /** @var \assign_feedback_verified $feedbackplugin */
+            $feedbackplugin = $assign->get_feedback_plugin_by_type('verified');
+            if ($feedbackplugin->get_config('enabled')) {
+                $feedbackplugin->check_and_build_verification_slots_for_grade($grade);
+            }
+        }
+
+    }
 
     /**
      * Listen to events and queue the submission for processing.

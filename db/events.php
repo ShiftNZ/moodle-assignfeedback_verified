@@ -36,6 +36,13 @@ $observers = [
         'callback'    => '\assignfeedback_verified\local\event\observer::submission_updated',
         'priority'    => 0,
         'internal'    => false
-    ]
+    ],
+
+    [
+        'eventname'   => '\assignfeedback_verified\event\allocate_verifier',
+        'callback'    => '\assignfeedback_verified\local\event\observer::allocate_verifier',
+        'priority'    => 900,
+        'internal'    => true
+    ],
 
 ];
