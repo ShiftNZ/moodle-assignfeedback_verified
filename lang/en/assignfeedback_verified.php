@@ -34,6 +34,7 @@ $string['customtext'] = 'Custom text';
 $string['customtext_help'] = 'Used to create a custom verification type associated with verification, such as Manager verification, Assessor verification.';
 $string['enabled'] = 'Verification';
 $string['enabled_help'] = 'If enabled, allocated users can verify a learner\'s submission.';
+$string['eventallocateverifier'] = 'Allocate verifier to learner in assignment';
 $string['feedback'] = 'Feedback';
 $string['leavefeedback'] = 'Leave feedback';
 $string['pluginname'] = 'Verification feedback';
