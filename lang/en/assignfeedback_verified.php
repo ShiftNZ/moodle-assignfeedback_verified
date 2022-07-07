@@ -50,3 +50,4 @@ $string['verified:anybyproxy'] = 'Verify any assignment attempt as a proxy';
 $string['verifier'] = 'Verifier';
 $string['verification'] = 'Verification';
 $string['verificationspending'] = '{$a} verifications pending';
+$string['verificationcomplete'] = 'Verification complete';

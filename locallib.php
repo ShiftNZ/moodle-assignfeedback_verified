@@ -478,7 +478,18 @@ class assign_feedback_verified extends assign_feedback_plugin {
                 if (!allocated_user::count_records($params)) {
                     $params['customtext'] = empty($data->customtext) ? null : $data->customtext;
                     $allocatedverifier = new allocated_user(0, (object) $params);
-                    $allocatedverifier->create();
+                    $record = $allocatedverifier->create()->to_record();
+                    $eventparams = [
+                        'context' => $this->assignment->get_context(),
+                        'objectid' => $record->id,
+                        'relateduserid' => $record->userid,
+                        'other' => [
+                            'assignid' => $record->assignid,
+                            'verifierid' => $record->verifierid
+                        ]
+                    ];
+                    $event  = \assignfeedback_verified\event\allocate_verifier::create($eventparams);
+                    $event->trigger();
                 }
             }
             redirect($returnurl);
@@ -585,24 +596,36 @@ class assign_feedback_verified extends assign_feedback_plugin {
         $render =  $PAGE->get_renderer('assignfeedback_verified');
         if (!$verifications = $this->get_verifications($grade, false)) {
             $context['summarytitle'] = get_string('noverifiersallocated', 'assignfeedback_verified');
+            $context['summarynoverifiers'] = true;
         } else {
             if ($pendingcount = static::pending_verifications_count($verifications)) {
                 $context['summarytitle'] = get_string('verificationspending', 'assignfeedback_verified', $pendingcount);
+                $context['summarypending'] = true;
             } else {
                 $context['summarytitle'] = get_string('verificationcomplete', 'assignfeedback_verified');
-                $context['verified'] = true;
+                $context['summaryverified'] = true;
             }
             $context['verifications'] = [];
             foreach ($verifications as $verification) {
                 $data = new stdClass();
-                $data->verificationstautus = $verification->status;
-                if ($verification->status == verification_status::VERIFIED) {
-                    $data->verified = true;
+                $data->verificationstatus = $verification->status;
+                switch ($verification->status) {
+                    case verification_status::CHANGES_REQUESTED:
+                        $data->changesrequested = true;
+                        break;
+                    case verification_status::VERIFIED:
+                        $data->verified = true;
+                        break;
+                    default:
+                        $data->pending = true;
                 }
                 if (trim($verification->customtext) !== '') {
                     $data->title = s($verification->customtext);
                 } else {
                     $data->title = get_string('verification', 'assignfeedback_verified');
+                }
+                if ($verification->verifierid) {
+                    $data->verifierfullname = fullname(\core_user::get_user($verification->verifierid));
                 }
                 if ($verification->verifiedby) {
                     $data->verifiedbyfullname = fullname(\core_user::get_user($verification->verifiedby));

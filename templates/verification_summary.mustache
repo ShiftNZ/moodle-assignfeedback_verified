@@ -29,7 +29,24 @@
     {
     }
 }}
-<div>{{summarytitle}}</div>
-{{#verifications}}
-    {{> assignfeedback_verified/verification }}
-{{/verifications}}
+<div class="card" style="width: 18rem;">
+    <div class="card-header {{#summaryverified}}bg-success{{/summaryverified}}{{^summaryverified}}bg-danger{{/summaryverified}} text-white">
+        {{#summarynoverifiers}}<span class="icon fa fa-info-circle fa-fw"></span>{{/summarynoverifiers}}
+        {{#summarypending}}<span class="icon fa fa-info-circle fa-fw"></span>{{/summarypending}}
+        {{#summaryverified}}<span class="icon fa fa-check-circle-o fa-fw"></span>{{/summaryverified}}
+        <span>{{summarytitle}}</span>
+    </div>
+    <ul class="list-group list-group-flush">
+    {{#verifications}}
+        <li class="list-group-item">
+            {{#pending}}<small>Verification required by {{verifierfullname}}</small>{{/pending}}
+            {{#changesrequested}}<span class="icon fa fa-info fa-fw"></span><small>Changes requested by {{verifierfullname}}</small>{{/changesrequested}}
+            {{#verified}}<span class="icon fa fa-check fa-fw text-success"></span><small>Verified by {{verifiedbyfullname}}</small>{{/verified}}
+        <div>
+            {{{comment}}}
+        </div>
+        </li>
+    {{/verifications}}
+    </ul>
+</div>
+
