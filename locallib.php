@@ -94,7 +94,9 @@ class assign_feedback_verified extends assign_feedback_plugin {
      * @throws \core\invalid_persistent_exception
      * @throws coding_exception
      */
-    public static function create_verification_slot(int $assignid, int $gradeid, int $verifierid, ?string $customtext = ''): stdClass {
+    public static function create_verification_slot(
+        int $assignid, int $gradeid, int $verifierid, ?string $customtext = ''): stdClass {
+
         $verificationslot = new verification();
         $verificationslot->set('assignid', $assignid);
         $verificationslot->set('gradeid', $gradeid);
@@ -102,7 +104,24 @@ class assign_feedback_verified extends assign_feedback_plugin {
         if (trim($customtext) !== '') {
             $verificationslot->set('customtext', $customtext);
         }
+
         return $verificationslot->create()->to_record();
+    }
+
+    /**
+     * Helper method to see if slot for verifier. The gradeid will be unique to learner. But a
+     * learner can have many different verifiers.
+     *
+     * @param int $assignid
+     * @param int $gradeid
+     * @param int $verifierid
+     * @return bool
+     */
+    public static function verification_slot_exists(int $assignid, int $gradeid, int $verifierid): bool {
+        return verification::record_exists_select(
+            "assignid = :assignid AND gradeid = :gradeid AND verifierid = :verifierid",
+            ['assignid' => $assignid, 'gradeid' => $gradeid, 'verifierid' => $verifierid]
+        );
     }
 
     /**
@@ -303,7 +322,7 @@ class assign_feedback_verified extends assign_feedback_plugin {
     public function get_form_elements_for_user($grade, MoodleQuickForm $mform, stdClass $data, $userid): bool {
         global $USER;
 
-        $verifications = static::check_and_build_verification_slots_for_grade($grade);
+        $verifications = $this->get_verifications($grade, false);
         if (!$verifications) {
             $mform->addElement('static', 'notice', get_string('noverifiersallocated', 'assignfeedback_verified'));
             return false;
@@ -349,7 +368,6 @@ class assign_feedback_verified extends assign_feedback_plugin {
      */
     public function save(stdClass $grade, stdClass $data) {
         global $USER;
-
         if (!$verifications = $this->get_verifications($grade)) {
             return false;
         }
