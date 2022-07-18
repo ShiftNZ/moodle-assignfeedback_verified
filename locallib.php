@@ -391,10 +391,13 @@ class assign_feedback_verified extends assign_feedback_plugin {
                 'comment',
                 $id
             );
-            $commenttext = $data->{$field};
-            $commentformat = $data->{$field . 'format'};
-            $verification->set('commenttext', $commenttext);
-            $verification->set('commentformat', $commentformat);
+            // Method file_save_draft_area_files() via file_postupdate_standard_editor() will return null if empty text.
+            if (!empty($data->{$field})) {
+                $commenttext = $data->{$field};
+                $commentformat = $data->{$field . 'format'};
+                $verification->set('commenttext', $commenttext);
+                $verification->set('commentformat', $commentformat);
+            }
             $verification->update();
         }
         return true;
