@@ -125,6 +125,22 @@ class assign_feedback_verified extends assign_feedback_plugin {
     }
 
     /**
+     * Get a verification slot from a learner's submission attempt.
+     *
+     * @param int $assignid
+     * @param int $gradeid
+     * @param int $verifierid
+     * @return verification|null
+     */
+    public static function get_verification_slot(int $assignid, int $gradeid, int $verifierid): ?verification {
+        $slot = verification::get_record_select(
+            "assignid = :assignid AND gradeid = :gradeid AND verifierid = :verifierid",
+            ['assignid' => $assignid, 'gradeid' => $gradeid, 'verifierid' => $verifierid]
+        );
+        return $slot ?: null;
+    }
+
+    /**
      * Delete instance handler.
      *
      * @return bool
