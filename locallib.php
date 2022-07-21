@@ -133,8 +133,7 @@ class assign_feedback_verified extends assign_feedback_plugin {
      * @return verification|null
      */
     public static function get_verification_slot(int $assignid, int $gradeid, int $verifierid): ?verification {
-        $slot = verification::get_record_select(
-            "assignid = :assignid AND gradeid = :gradeid AND verifierid = :verifierid",
+        $slot = verification::get_record(
             ['assignid' => $assignid, 'gradeid' => $gradeid, 'verifierid' => $verifierid]
         );
         return $slot ?: null;
