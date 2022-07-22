@@ -59,7 +59,11 @@ class verification extends persistent {
             'commentformat' => [
                 'type' => PARAM_INT,
                 'default' => FORMAT_HTML
-            ]
+            ],
+            'component' => [
+                'type' => PARAM_COMPONENT,
+                'default' => 'assignfeedback_verified'
+            ],
         ];
     }
 

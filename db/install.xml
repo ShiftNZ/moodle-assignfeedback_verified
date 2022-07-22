@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/assign/feedback/verified/db" VERSION="20220620" COMMENT="XMLDB file for Moodle mod/assign/feedback/verified"
+<XMLDB PATH="mod/assign/feedback/verified/db" VERSION="20220722" COMMENT="XMLDB file for Moodle mod/assign/feedback/verified"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
 >
@@ -15,6 +15,7 @@
         <FIELD NAME="customtext" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Custom verification type text."/>
         <FIELD NAME="commenttext" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The feedback text."/>
         <FIELD NAME="commentformat" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The feedback text format."/>
+        <FIELD NAME="component" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" COMMENT="Used to identify the component that created the verification slot."/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>

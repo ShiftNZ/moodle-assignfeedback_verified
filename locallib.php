@@ -95,7 +95,7 @@ class assign_feedback_verified extends assign_feedback_plugin {
      * @throws coding_exception
      */
     public static function create_verification_slot(
-        int $assignid, int $gradeid, int $verifierid, ?string $customtext = ''): stdClass {
+        int $assignid, int $gradeid, int $verifierid, ?string $customtext = '', string $component = ''): stdClass {
 
         $verificationslot = new verification();
         $verificationslot->set('assignid', $assignid);
@@ -104,7 +104,9 @@ class assign_feedback_verified extends assign_feedback_plugin {
         if (trim($customtext) !== '') {
             $verificationslot->set('customtext', $customtext);
         }
-
+        if (trim($component) !== '') {
+            $verificationslot->set('component', $component);
+        }
         return $verificationslot->create()->to_record();
     }
 
@@ -130,12 +132,16 @@ class assign_feedback_verified extends assign_feedback_plugin {
      * @param int $assignid
      * @param int $gradeid
      * @param int $verifierid
+     * @param string $component
      * @return verification|null
      */
-    public static function get_verification_slot(int $assignid, int $gradeid, int $verifierid): ?verification {
-        $slot = verification::get_record(
-            ['assignid' => $assignid, 'gradeid' => $gradeid, 'verifierid' => $verifierid]
-        );
+    public static function get_verification_slot(
+        int $assignid, int $gradeid, int $verifierid, string $component = ''): ?verification {
+        $conditions = ['assignid' => $assignid, 'gradeid' => $gradeid, 'verifierid' => $verifierid];
+        if (trim($component) !== '') {
+            $conditions['component'] = $component;
+        }
+        $slot = verification::get_record($conditions);
         return $slot ?: null;
     }
 
