@@ -192,6 +192,9 @@ class assign_feedback_verified extends assign_feedback_plugin {
      * @throws coding_exception
      */
     public function get_grading_batch_operations(): array {
+        if (!$this->get_config('allowmanualallocation')) {
+            return [];
+        }
         return [
             'allocateverifier' => get_string('batchoperationallocateverifier', 'assignfeedback_verified'),
             'removeallocatedverifiers' => get_string('batchoperationremoveallocatedverifiers', 'assignfeedback_verified')

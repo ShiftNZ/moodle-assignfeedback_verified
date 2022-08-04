@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - https://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,10 +12,10 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * This file defines the admin settings for this the verified assignment feedback plugin.
  *
  * @package     assignfeedback_verified
  * @copyright   2022 Skills Consulting Group
@@ -24,10 +24,16 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'assignfeedback_verified';
-$plugin->release = '1.0.0';
-$plugin->version = 2022072100;
-$plugin->requires = 2020061500;
-$plugin->maturity = MATURITY_BETA;
-$plugin->supported = [39, 311];
+$setting = new admin_setting_configcheckbox(
+    'assignfeedback_verified/default',
+    get_string('default', 'assignfeedback_verified'),
+    get_string('default_help', 'assignfeedback_verified'), 0
+);
+$settings->add($setting);
 
+$setting = new admin_setting_configcheckbox(
+    'assignfeedback_verified/allowmanualallocation',
+    get_string('allowmanualallocation', 'assignfeedback_verified'),
+    get_string('allowmanualallocation::help', 'assignfeedback_verified'), 0
+);
+$settings->add($setting);

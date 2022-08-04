@@ -25,6 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['allowmanualallocation'] = 'Allow manual allocation';
+$string['allowmanualallocation::help'] = 'Manaul allocate/remove verifiers using bulk operations form.';
 $string['batchoperationallocateverifier'] = 'Allocate verifier';
 $string['batchoperationconfirmallocateverifier'] = 'Allocate verifier for selected learners?';
 $string['batchoperationconfirmremoveallocatedverifiers'] = 'Remove allocated verifiers for selected learners?';
@@ -35,6 +37,8 @@ $string['customtext_help'] = 'Used to create a custom verification type associat
 $string['enabled'] = 'Verification';
 $string['enabled_help'] = 'If enabled, allocated users can verify a learner\'s submission.';
 $string['eventallocateverifier'] = 'Allocate verifier to learner in assignment';
+$string['default'] = 'Enabled by default';
+$string['default_help'] = 'If set, this feedback method will be enabled by default for all new assignments.';
 $string['feedback'] = 'Feedback';
 $string['leavefeedback'] = 'Leave feedback';
 $string['pluginname'] = 'Verification feedback';
