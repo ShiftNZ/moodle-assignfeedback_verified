@@ -353,18 +353,45 @@ class assign_feedback_verified extends assign_feedback_plugin {
         }
         foreach ($verifications as $verification) {
             $canverify = $verification->verifierid == $USER->id || has_capability('assignfeedback/verified:anybyproxy', $this->assignment->get_context());
-            if ($canverify) {
-                $radiogroup = [];
-                $radiofield  = 'assignfeedbackverifiedstatus_' . $verification->id;
-                $radiolabel = $verification->customtext ?? get_string('verification',  'assignfeedback_verified');
-                $radiogroup[] = $mform->createElement('radio', $radiofield, '', get_string('requestchanges',  'assignfeedback_verified'), verification_status::CHANGES_REQUESTED);
-                $radiogroup[] = $mform->createElement('radio', $radiofield, '', get_string('verified',  'assignfeedback_verified'), verification_status::VERIFIED);
-                $mform->addGroup($radiogroup, 'statusradiogroup', $radiolabel, '', false);
-                $mform->setDefault($radiofield, $verification->status);
-                $field = 'assignfeedbackverifiedcomment_' . $verification->id;
-                $editor = $field . '_editor';
-                $data->{$field} = $verification->commenttext;
-                $data->{$field . 'format'} = $verification->commentformat;
+            $attributes = [];
+            if (!$canverify) {
+                $attributes['disabled'] = 'disabled';
+            }
+            $radiogroup = [];
+            $radiofield  = 'assignfeedbackverifiedstatus_' . $verification->id;
+            $radiolabel = $verification->customtext ?? get_string('verification',  'assignfeedback_verified');
+            $radiogroup[] = $mform->createElement(
+                'radio', $radiofield, '',
+                get_string('requestchanges',  'assignfeedback_verified'),
+                verification_status::CHANGES_REQUESTED,
+                $attributes
+            );
+            $radiogroup[] = $mform->createElement(
+                'radio', $radiofield, '',
+                get_string('verified',  'assignfeedback_verified'),
+                verification_status::VERIFIED,
+                $attributes
+            );
+            $mform->addGroup($radiogroup, 'statusradiogroup', $radiolabel, '', false);
+            $mform->setDefault($radiofield, $verification->status);
+            $field = 'assignfeedbackverifiedcomment_' . $verification->id;
+            $editor = $field . '_editor';
+            $data->{$field} = $verification->commenttext;
+            $data->{$field . 'format'} = $verification->commentformat;
+            if (!$canverify) {
+                $comment = '';
+                if (trim($verification->commenttext) !== '') {
+                    $comment = format_text(
+                        $this->rewrite_comment_text_urls($verification->commenttext, $verification->id),
+                        $verification->commentformat,
+                        ['context' => $this->assignment->get_context()->id]
+                    );
+                    $label = get_string('feedback', 'assignfeedback_verified');
+                } else {
+                    $label = get_string('nofeedbackgiven', 'assignfeedback_verified');
+                }
+                $mform->addElement('static', $editor, $label, $comment);
+            } else {
                 file_prepare_standard_editor(
                     $data,
                     $field,

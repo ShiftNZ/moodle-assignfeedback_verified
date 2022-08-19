@@ -1,8 +1,8 @@
 # Verified #
 
-TODO Describe the plugin shortly here.
+A Moodle assignment feedback plugin that provides support for a verification process. 
 
-TODO Provide more detailed description here.
+A work in progress, more information on how this plugin can be used is coming soon...
 
 ## Installing via uploaded ZIP file ##
 

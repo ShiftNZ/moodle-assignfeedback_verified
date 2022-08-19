@@ -40,6 +40,7 @@ $string['eventallocateverifier'] = 'Allocate verifier to learner in assignment';
 $string['default'] = 'Enabled by default';
 $string['default_help'] = 'If set, this feedback method will be enabled by default for all new assignments.';
 $string['feedback'] = 'Feedback';
+$string['nofeedbackgiven'] = 'No feedback given';
 $string['leavefeedback'] = 'Leave feedback';
 $string['pluginname'] = 'Verification feedback';
 $string['noverifiersallocated'] = 'No verifiers allocated';
