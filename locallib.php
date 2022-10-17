@@ -62,7 +62,7 @@ class assign_feedback_verified extends assign_feedback_plugin {
                     $verification = static::create_verification_slot(
                         $grade->assignment, $grade->id, $allocateduser->verifierid, $allocateduser->customtext
                     );
-                    $slots[] = $verification;
+                    $slots[] = $verification->to_record();
                 }
             } else {
                 foreach ($allocatedusers as $allocateduser) {
@@ -75,7 +75,7 @@ class assign_feedback_verified extends assign_feedback_plugin {
                         $verification = static::create_verification_slot(
                             $grade->assignment, $grade->id, $allocateduser->verifierid, $allocateduser->customtext
                         );
-                        $slots[] = $verification;
+                        $slots[] = $verification->to_record();
                     }
                 }
             }
@@ -90,12 +90,13 @@ class assign_feedback_verified extends assign_feedback_plugin {
      * @param int $gradeid
      * @param int $verifierid
      * @param string|null $customtext
-     * @return stdClass
+     * @param string|null $component
+     * @return verification
      * @throws \core\invalid_persistent_exception
      * @throws coding_exception
      */
     public static function create_verification_slot(
-        int $assignid, int $gradeid, int $verifierid, ?string $customtext = '', string $component = ''): stdClass {
+        int $assignid, int $gradeid, int $verifierid, ?string $customtext = '', ?string $component = ''): verification {
 
         $verificationslot = new verification();
         $verificationslot->set('assignid', $assignid);
@@ -107,7 +108,7 @@ class assign_feedback_verified extends assign_feedback_plugin {
         if (trim($component) !== '') {
             $verificationslot->set('component', $component);
         }
-        return $verificationslot->create()->to_record();
+        return $verificationslot->create();
     }
 
     /**
