@@ -128,6 +128,35 @@ class assign_feedback_verified extends assign_feedback_plugin {
     }
 
     /**
+     * Get overall verification status for all verifications associated with a learner's
+     * assignment grade.
+     *
+     * Follows order:
+     *     "Changes requested" > "Unverified" > "Verified"
+     *
+     * @param stdClass $grade
+     * @return string|null
+     */
+    public static function get_overall_status_for_grade(stdClass $grade): ?string {
+        if ($verifications = verification::get_records(['gradeid' => $grade->id])) {
+            $statuses = array_map(function($verification) {
+                return $verification->to_record()->status;
+            }, $verifications);
+            $uniquestatuses = array_unique($statuses);
+            if (in_array(verification_status::CHANGES_REQUESTED, $uniquestatuses)) {
+                return verification_status::CHANGES_REQUESTED;
+            }
+            if (in_array(verification_status::UNVERIFIED, $uniquestatuses)) {
+                return verification_status::UNVERIFIED;
+            }
+            if (in_array(verification_status::VERIFIED, $uniquestatuses)) {
+                return verification_status::VERIFIED;
+            }
+        }
+        return verification_status::DEFAULT;
+    }
+
+    /**
      * Get a verification slot from a learner's submission attempt.
      *
      * @param int $assignid

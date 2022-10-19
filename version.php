@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'assignfeedback_verified';
 $plugin->release = '1.0.0';
-$plugin->version = 2022081900;
+$plugin->version = 2022101900;
 $plugin->requires = 2020061500;
 $plugin->maturity = MATURITY_BETA;
 $plugin->supported = [39, 311];
